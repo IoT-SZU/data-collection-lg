@@ -2,6 +2,7 @@ package com.example.tommy.dataCollection.utils;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -9,6 +10,7 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.*;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class FileTransfer {
@@ -46,7 +48,7 @@ public class FileTransfer {
                 .build();
     }
 
-    public boolean send(ArrayList<Short>[] data, ResultCallback<DataApi.DataItemResult> callback) {
+    public boolean send(ArrayList<Short>[] data, File audio, ResultCallback<DataApi.DataItemResult> callback) {
         PutDataMapRequest dataMap = PutDataMapRequest.create("/send_file");
         DataMap dm = dataMap.getDataMap();
         try {
@@ -54,6 +56,8 @@ public class FileTransfer {
                 Asset asset = Asset.createFromBytes(array2String(data[i]).getBytes());
                 dm.putAsset(DATA_KEY_MAP[i], asset);
             }
+            Asset asset = Asset.createFromFd(ParcelFileDescriptor.open(audio, ParcelFileDescriptor.MODE_READ_ONLY));
+            dm.putAsset("audio", asset);
 
             PutDataRequest request = dataMap.asPutDataRequest();
             if (!mGoogleApiClient.isConnected()) {

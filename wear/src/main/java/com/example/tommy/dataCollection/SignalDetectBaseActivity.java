@@ -1,13 +1,13 @@
 package com.example.tommy.dataCollection;
 
-import android.support.wearable.activity.WearableActivity;
+import android.app.Activity;
 import android.view.MotionEvent;
 import com.example.tommy.dataCollection.utils.SignalDetect;
 
 /**
  * Created by chenlin on 09/04/2018.
  */
-public abstract class SignalDetectBaseActivity extends WearableActivity implements SignalDetect.OnDetectSignalListener {
+public abstract class SignalDetectBaseActivity extends Activity implements SignalDetect.OnDetectSignalListener {
     private static final String TAG = "BaseActivity";
     private static int delay = 600; // 手指离开屏幕后 delay(ms) 再将 touchScreen 设置为 false;
 

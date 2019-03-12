@@ -1,28 +1,33 @@
 package com.example.tommy.dataCollection;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+import com.example.tommy.dataCollection.services.AudioService;
 import com.example.tommy.dataCollection.services.DataCollectService;
 import com.example.tommy.dataCollection.utils.FileTransfer;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.wearable.DataApi;
 
+import java.io.File;
 import java.util.ArrayList;
 
-public class CollectOriginalSignalActivity extends WearableActivity
+public class CollectOriginalSignalActivity extends Activity
     implements DataCollectService.OnReceiveListener {
     Button startBtn;
 
     ArrayList<Short>[] data;
 
     DataCollectService service;
+    AudioService audioService;
     FileTransfer fileTransfer;
+
+    File audioFile;
     boolean start = false;
 
     @Override
@@ -33,6 +38,7 @@ public class CollectOriginalSignalActivity extends WearableActivity
         startBtn = (Button) findViewById(R.id.startBtn);
 
         service = DataCollectService.getInstance();
+        audioService = new AudioService();
 
         fileTransfer = new FileTransfer(this);
 
@@ -63,11 +69,13 @@ public class CollectOriginalSignalActivity extends WearableActivity
 
         if (start) {
             service.addEventListener(this);
+            audioService.startRecord();
             for (int i = 0; i < 6; ++i) {
                 data[i].clear();
             }
         } else {
             service.removeEventListener(this);
+            audioFile = audioService.stopRecrod();
         }
     }
 
@@ -87,7 +95,7 @@ public class CollectOriginalSignalActivity extends WearableActivity
         new Thread(new Runnable() {
             @Override
             public void run() {
-                boolean res = fileTransfer.send(data, new ResultCallback<DataApi.DataItemResult>() {
+                boolean res = fileTransfer.send(data, audioFile, new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
                         Status status = dataItemResult.getStatus();

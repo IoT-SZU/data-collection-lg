@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -21,7 +20,7 @@ import java.io.InputStream;
 
 public class FileTransfer implements DataApi.DataListener {
     private static final String TAG = "FileTransfer";
-    private static final String[] DATA_KEY_MAP = {"xAcceData", "yAcceData", "zAcceData", "xGyroData", "yGyroData", "zGyroData"};
+    private static final String[] DATA_KEY_MAP = {"xAcceData", "yAcceData", "zAcceData", "xGyroData", "yGyroData", "zGyroData", "audio"};
 
     private static GoogleApiClient mGoogleApiClient;
 

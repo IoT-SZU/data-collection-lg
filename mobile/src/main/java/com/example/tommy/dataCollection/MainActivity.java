@@ -1,8 +1,8 @@
 package com.example.tommy.dataCollection;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends Activity {
     final String TAG = "Main";
     final String BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SensorRecords/";
     final String FILE_PATH = BASE_PATH + new SimpleDateFormat("yyyy-MM-dd").format(new Date());
